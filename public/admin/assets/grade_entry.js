@@ -1,3 +1,5 @@
+import { escapeHtml } from '../../assets/utils.js';
+
 const jwt = localStorage.getItem('jwt');
 if (!jwt) {
   alert('Sesión expirada. Inicie sesión de nuevo.');
@@ -31,7 +33,7 @@ function fetchOptions() {
 function populateSelects() {
   // Modalidades
   selModalidad.innerHTML = '<option value="">--Seleccione--</option>' +
-    options.modalidades.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('');
+    options.modalidades.map(m => `<option value="${m.id}">${escapeHtml(m.nombre)}</option>`).join('');
 
   // Events
   selModalidad.addEventListener('change', handleModalidadChange);
@@ -45,7 +47,7 @@ function handleModalidadChange() {
   if (!modId) return;
 
   const grades = options.grados.filter(g => g.modalidad_id === modId);
-  selGrado.innerHTML += grades.map(g => `<option value="${g.id}">${g.nombre}</option>`).join('');
+  selGrado.innerHTML += grades.map(g => `<option value="${g.id}">${escapeHtml(g.nombre)}</option>`).join('');
   handleGradoChange();
 }
 
@@ -55,13 +57,13 @@ function handleGradoChange() {
   if (!gradeId) return;
 
   const secs = options.secciones.filter(s => s.grado_id === gradeId);
-  selSeccion.innerHTML += secs.map(s => `<option value="${s.id}">${s.nombre}</option>`).join('');
+  selSeccion.innerHTML += secs.map(s => `<option value="${s.id}">${escapeHtml(s.nombre)}</option>`).join('');
 }
 
 // Asignaturas sin filtro adicional por ahora
 function loadAsignaturas() {
   selAsignatura.innerHTML = '<option value="">--Seleccione--</option>' +
-    options.asignaturas.map(a => `<option value="${a.id}">${a.nombre}</option>`).join('');
+    options.asignaturas.map(a => `<option value="${a.id}">${escapeHtml(a.nombre)}</option>`).join('');
 }
 
 btnCargar.addEventListener('click', () => {
@@ -102,8 +104,8 @@ function studentRowHtml(s) {
             class="w-20 border rounded p-1 text-center text-sm">`;
   return `
     <tr>
-      <td class="border px-1 py-0.5 text-sm">${s.sigerd_id}</td>
-      <td class="border px-1 py-0.5 text-sm">${s.nombres} ${s.apellidos}</td>
+      <td class="border px-1 py-0.5 text-sm">${escapeHtml(s.sigerd_id)}</td>
+      <td class="border px-1 py-0.5 text-sm">${escapeHtml(s.nombres)} ${escapeHtml(s.apellidos)}</td>
       <td class="border px-1 py-0.5">${makeInput('c1', s.c1)}</td>
       <td class="border px-1 py-0.5">${makeInput('rp1', s.rp1)}</td>
       <td class="border px-1 py-0.5">${makeInput('c2', s.c2)}</td>
