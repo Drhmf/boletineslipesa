@@ -1,0 +1,16 @@
+@media print {
+  body {
+    background: #fff;
+  }
+  main {
+    box-shadow: none !important;
+  }
+  table th,
+  table td {
+    font-size: 12px !important;
+    padding: 4px 6px !important;
+  }
+  .text-red-600    { color: #e3342f !important; }
+  .text-green-600  { color: #38c172 !important; }
+  .text-yellow-600 { color: #ffed4a !important; }
+}

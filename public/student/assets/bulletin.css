@@ -1,0 +1,4 @@
+/* Clases utilitarias extra (si deseas usarlas aparte de Tailwind) */
+.text-pass      { color: #16a34a; font-weight: 600; }
+.text-fail      { color: #dc2626; font-weight: 600; }
+.text-pending   { color: #ca8a04; font-weight: 600; }
