@@ -1,4 +1,5 @@
 import { fetchJSON, postJSON } from './helpers.js';
+import { escapeHtml } from '../../assets/utils.js';
 
 const jwt = localStorage.getItem('jwt');
 if (!jwt) { window.location.href = '/admin/index.php'; }
@@ -24,7 +25,7 @@ function fetchOptions() {
 
 function populateSelects() {
   selModalidad.innerHTML = '<option value="">--Seleccione--</option>' +
-    options.modalidades.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('');
+    options.modalidades.map(m => `<option value="${m.id}">${escapeHtml(m.nombre)}</option>`).join('');
   selModalidad.addEventListener('change', handleModalidadChange);
   selGrado.addEventListener('change', handleGradoChange);
   handleModalidadChange();
@@ -35,7 +36,7 @@ function handleModalidadChange() {
   selGrado.innerHTML = '<option value="">--Seleccione--</option>';
   if (!modId) return;
   const grades = options.grados.filter(g => g.modalidad_id === modId);
-  selGrado.innerHTML += grades.map(g => `<option value="${g.id}">${g.nombre}</option>`).join('');
+  selGrado.innerHTML += grades.map(g => `<option value="${g.id}">${escapeHtml(g.nombre)}</option>`).join('');
   handleGradoChange();
 }
 
@@ -44,12 +45,12 @@ function handleGradoChange() {
   selSeccion.innerHTML = '<option value="">--Seleccione--</option>';
   if (!gradeId) return;
   const secs = options.secciones.filter(s => s.grado_id === gradeId);
-  selSeccion.innerHTML += secs.map(s => `<option value="${s.id}">${s.nombre}</option>`).join('');
+  selSeccion.innerHTML += secs.map(s => `<option value="${s.id}">${escapeHtml(s.nombre)}</option>`).join('');
 }
 
 function loadAsignaturas() {
   selAsignatura.innerHTML = '<option value="">--Seleccione--</option>' +
-    options.asignaturas.map(a => `<option value="${a.id}">${a.nombre}</option>`).join('');
+    options.asignaturas.map(a => `<option value="${a.id}">${escapeHtml(a.nombre)}</option>`).join('');
 }
 
 btnCargar.addEventListener('click', () => {
@@ -73,8 +74,8 @@ function renderList(list) {
   if (!list.length) { alert('Sin estudiantes'); return; }
   studentRows.innerHTML = list.map(l => `
     <tr>
-      <td class="border px-1 py-0.5 text-sm">${l.sigerd_id}</td>
-      <td class="border px-1 py-0.5 text-sm">${l.nombres} ${l.apellidos}</td>
+      <td class="border px-1 py-0.5 text-sm">${escapeHtml(l.sigerd_id)}</td>
+      <td class="border px-1 py-0.5 text-sm">${escapeHtml(l.nombres)} ${escapeHtml(l.apellidos)}</td>
       <td class="border px-1 py-0.5 text-sm">
         <input type="number" min="0" max="100" step="0.01" value="${l.porcentaje ?? ''}"
                class="w-24 border rounded p-1 text-center" />
