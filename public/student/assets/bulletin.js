@@ -1,4 +1,5 @@
 import { getStatusMessage } from './utils.js';
+import { escapeHtml } from '../../assets/utils.js';
 
 const container = document.getElementById('bulletinContainer');
 const jwt = localStorage.getItem('jwt');
@@ -17,7 +18,7 @@ if (!jwt) {
     })
     .catch(err => {
       container.innerHTML =
-        `<p class="text-center text-red-500">${err.message}</p>`;
+        `<p class="text-center text-red-500">${escapeHtml(err.message)}</p>`;
     });
 }
 
@@ -27,15 +28,15 @@ function renderBulletin(info) {
   /* ---------- Encabezado ---------- */
   const header = /*html*/ `
     <header class="text-center mb-6">
-      <h1 class="text-2xl font-bold">${center.name}</h1>
-      <p class="text-sm">Código: ${center.code}</p>
-      <p class="text-sm mb-4">${center.address}</p>
+      <h1 class="text-2xl font-bold">${escapeHtml(center.name)}</h1>
+      <p class="text-sm">Código: ${escapeHtml(center.code)}</p>
+      <p class="text-sm mb-4">${escapeHtml(center.address)}</p>
 
       <h2 class="text-xl font-semibold mt-4">Boletín de Calificaciones</h2>
-      <p class="mt-2"><strong>Estudiante:</strong> ${student.nombres} ${student.apellidos}</p>
-      <p><strong>ID SIGERD:</strong> ${student.sigerd_id}</p>
-      <p><strong>Modalidad:</strong> ${student.modalidad}</p>
-      <p><strong>Grado y Sección:</strong> ${student.grado} — ${student.seccion}</p>
+      <p class="mt-2"><strong>Estudiante:</strong> ${escapeHtml(student.nombres)} ${escapeHtml(student.apellidos)}</p>
+      <p><strong>ID SIGERD:</strong> ${escapeHtml(student.sigerd_id)}</p>
+      <p><strong>Modalidad:</strong> ${escapeHtml(student.modalidad)}</p>
+      <p><strong>Grado y Sección:</strong> ${escapeHtml(student.grado)} — ${escapeHtml(student.seccion)}</p>
     </header>
   `;
 
@@ -52,7 +53,7 @@ function renderBulletin(info) {
 
     return `
       <tr>
-        <td class="border px-2 py-1">${s.asignatura}</td>
+        <td class="border px-2 py-1">${escapeHtml(s.asignatura)}</td>
         ${periodCells}
         <td class="border px-2 py-1 text-center font-semibold ${finalClass}">
           ${s.final}
@@ -86,12 +87,12 @@ function renderBulletin(info) {
     <div class="flex justify-around mt-8 text-center">
       <div>
         ___________________________<br>
-        ${signatories.director}<br>
+        ${escapeHtml(signatories.director)}<br>
         <span class="font-semibold">Directora</span>
       </div>
       <div>
         ___________________________<br>
-        ${signatories.registrar}<br>
+        ${escapeHtml(signatories.registrar)}<br>
         <span class="font-semibold">Registro & Control Académico</span>
       </div>
     </div>
