@@ -82,7 +82,7 @@ class GradeService
         foreach ($grades as $g) {
             $sid    = $g['sigerd_id'];
             $notes  = $g['competencies'];
-            $rps    = $g['rp'] ?? [None, None, None, None];
+            $rps    = $g['rp'] ?? [null, null, null, null];
 
             for ($i = 0; $i < 4; $i++) {
                 $stmt->execute([
