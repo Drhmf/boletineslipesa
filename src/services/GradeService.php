@@ -68,34 +68,40 @@ class GradeService
         $db = Database::getConnection();
         $db->beginTransaction();
 
-        $sql = "
-            INSERT INTO calificaciones
-                (estudiante_id, asignatura_id, competencia_id, periodo, nota, rp_nota)
-            VALUES
-                (:sid, :subject_id, :comp_id, :period, :nota, :rp_nota)
-            ON DUPLICATE KEY UPDATE
-                nota = VALUES(nota),
-                rp_nota = VALUES(rp_nota)
-        ";
-        $stmt = $db->prepare($sql);
+        try {
 
-        foreach ($grades as $g) {
-            $sid    = $g['sigerd_id'];
-            $notes  = $g['competencies'];
-            $rps    = $g['rp'] ?? [null, null, null, null];
+            $sql = "
+                INSERT INTO calificaciones
+                    (estudiante_id, asignatura_id, competencia_id, periodo, nota, rp_nota)
+                VALUES
+                    (:sid, :subject_id, :comp_id, :period, :nota, :rp_nota)
+                ON DUPLICATE KEY UPDATE
+                    nota = VALUES(nota),
+                    rp_nota = VALUES(rp_nota)
+            ";
+            $stmt = $db->prepare($sql);
 
-            for ($i = 0; $i < 4; $i++) {
-                $stmt->execute([
-                    ':sid'         => $sid,
-                    ':subject_id'  => $subjectId,
-                    ':comp_id'     => $i + 1,
-                    ':period'      => $period,
-                    ':nota'        => $notes[$i] ?? null,
-                    ':rp_nota'     => $rps[$i] ?? null,
-                ]);
+            foreach ($grades as $g) {
+                $sid    = $g['sigerd_id'];
+                $notes  = $g['competencies'];
+                $rps    = $g['rp'] ?? [null, null, null, null];
+
+                for ($i = 0; $i < 4; $i++) {
+                    $stmt->execute([
+                        ':sid'         => $sid,
+                        ':subject_id'  => $subjectId,
+                        ':comp_id'     => $i + 1,
+                        ':period'      => $period,
+                        ':nota'        => $notes[$i] ?? null,
+                        ':rp_nota'     => $rps[$i] ?? null,
+                    ]);
+                }
             }
-        }
 
-        $db->commit();
+            $db->commit();
+        } catch (\Throwable $th) {
+            $db->rollBack();
+            throw $th;
+        }
     }
 }
