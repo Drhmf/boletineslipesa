@@ -12,7 +12,7 @@ export function postJSON(url, data, jwt) {
 export function putJSON(url, data, jwt) {
   return fetch(url, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${jwt}` },
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded', Authorization: `Bearer ${jwt}` },
     body: new URLSearchParams(data)
   }).then(r => r.json().then(d => { if (!r.ok) throw new Error(d.error || 'Error'); return d; }));
 }
