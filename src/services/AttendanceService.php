@@ -39,23 +39,29 @@ class AttendanceService
     {
         $db = Database::getConnection();
         $db->beginTransaction();
-        $sql = '
-            INSERT INTO asistencias
-                (estudiante_id, asignatura_id, periodo, porcentaje)
-            VALUES
-                (:sid, :subject, :period, :percent)
-            ON DUPLICATE KEY UPDATE
-                porcentaje = VALUES(porcentaje)';
-        $stmt = $db->prepare($sql);
 
-        foreach ($records as $r) {
-            $stmt->execute([
-                ':sid'     => $r['sigerd_id'],
-                ':subject' => $subjectId,
-                ':period'  => $period,
-                ':percent' => $r['porcentaje'],
-            ]);
+        try {
+            $sql = '
+                INSERT INTO asistencias
+                    (estudiante_id, asignatura_id, periodo, porcentaje)
+                VALUES
+                    (:sid, :subject, :period, :percent)
+                ON DUPLICATE KEY UPDATE
+                    porcentaje = VALUES(porcentaje)';
+            $stmt = $db->prepare($sql);
+
+            foreach ($records as $r) {
+                $stmt->execute([
+                    ':sid'     => $r['sigerd_id'],
+                    ':subject' => $subjectId,
+                    ':period'  => $period,
+                    ':percent' => $r['porcentaje'],
+                ]);
+            }
+            $db->commit();
+        } catch (\Throwable $th) {
+            $db->rollBack();
+            throw $th;
         }
-        $db->commit();
     }
 }
