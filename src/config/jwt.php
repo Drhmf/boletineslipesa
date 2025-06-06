@@ -11,7 +11,7 @@ class JWTService
 
     private static function secret(): string
     {
-        return Env::get('JWT_SECRET', 'Hector402#');
+        return Env::get('JWT_SECRET', 'HolaMundo');
     }
 
     public static function generateToken(array $payload): string
