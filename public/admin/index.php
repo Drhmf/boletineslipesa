@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin • Boletines</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script type="module" src="assets/recaptcha.js"></script>
+  <script type="module" src="/assets/recaptcha.js"></script>
 </head>
 <body class="min-h-screen flex items-center justify-center bg-gray-50">
   <div class="w-full max-w-sm bg-white shadow-lg rounded-2xl p-6">
@@ -36,7 +36,7 @@
   </div>
 
   <script type="module">
-    import { getToken } from './assets/recaptcha.js';
+    import { getToken } from '/assets/recaptcha.js';
     const siteKey = '<?php echo htmlspecialchars(App\Config\Env::get("CAPTCHA_SITEKEY")); ?>';
 
     document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
